@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:word_game/home_view.dart';
+import 'package:word_game/services/service_locator.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setUpServiceLocator();
+  await dictionary().ready;
   runApp(const MyApp());
 }
 

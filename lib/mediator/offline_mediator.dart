@@ -1,5 +1,6 @@
 import 'package:word_game/mediator/mediator.dart';
 import 'package:word_game/model/word_data.dart';
+import 'package:word_game/services/service_locator.dart';
 
 class OfflineMediator implements Mediator {
   final String answer;
@@ -8,6 +9,7 @@ class OfflineMediator implements Mediator {
   @override
   Future<WordValidationResult> validateWord(String word) async {
     if (word.length != answer.length) return WordValidationResult.invalid();
+    if (!dictionary().isValidWord(word)) return WordValidationResult.invalid();
     List<int> correct = [];
     List<int> semiCorrect = [];
     for (int i = 0; i < word.length; i++) {
