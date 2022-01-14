@@ -10,13 +10,15 @@ class OfflineMediator implements Mediator {
   Future<WordValidationResult> validateWord(String word) async {
     if (word.length != answer.length) return WordValidationResult.invalid();
     if (!dictionary().isValidWord(word)) return WordValidationResult.invalid();
+    print('answer: $answer');
     List<int> correct = [];
     List<int> semiCorrect = [];
     for (int i = 0; i < word.length; i++) {
       String letter = word[i];
-      int index = answer.indexOf(letter);
-      if (index != -1) {
-        if (index == i) {
+      List<int> indices = RegExp(letter).allMatches(answer).map((RegExpMatch e) => e.start).toList();
+      print('letter $letter, indices: $indices');
+      if (indices.isNotEmpty) {
+        if (indices.contains(i)) {
           correct.add(i);
         } else {
           semiCorrect.add(i);
