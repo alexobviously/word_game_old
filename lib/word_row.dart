@@ -37,6 +37,7 @@ class WordRow extends StatelessWidget {
       _letterData.add(LetterData(_letters[i], c));
     }
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: _letterData.map((e) => _letter(context, e.content, colour: e.colour)).toList(),
     );
   }

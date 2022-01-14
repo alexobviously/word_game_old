@@ -16,7 +16,6 @@ class OfflineMediator implements Mediator {
     for (int i = 0; i < word.length; i++) {
       String letter = word[i];
       List<int> indices = RegExp(letter).allMatches(answer).map((RegExpMatch e) => e.start).toList();
-      print('letter $letter, indices: $indices');
       if (indices.isNotEmpty) {
         if (indices.contains(i)) {
           correct.add(i);

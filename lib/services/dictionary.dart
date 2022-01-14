@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/services.dart';
 import 'package:word_game/extensions/ready_mixin.dart';
 
@@ -39,5 +41,10 @@ class Dictionary with ReadyManager {
   bool isValidWord(String word) {
     if (word.length < minimumLength || word.length > maximumLength) return false;
     return words[word.length]!.contains(word);
+  }
+
+  String randomWord(int length) {
+    int i = Random().nextInt(words[length]!.length);
+    return words[length]![i];
   }
 }
