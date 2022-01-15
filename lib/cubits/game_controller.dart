@@ -33,6 +33,7 @@ class GameState {
 
   String get word => current.content;
   bool get wordReady => word.length == length;
+  bool get wordEmpty => word.isEmpty;
   Set<String> get correctLetters => Set<String>.from(guesses.expand((e) => e.correctLetters));
   Set<String> get semiCorrectLetters =>
       Set<String>.from(guesses.expand((e) => e.semiCorrectLetters))..removeWhere((e) => correctLetters.contains(e));

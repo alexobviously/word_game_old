@@ -119,6 +119,7 @@ class _GamePageState extends State<GamePage> {
                           semiCorrect: state.semiCorrectLetters,
                           wrong: state.wrongLetters,
                           wordReady: state.wordReady,
+                          wordEmpty: state.wordEmpty,
                         )),
                       ),
                     ),

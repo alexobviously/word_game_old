@@ -13,6 +13,7 @@ class GameKeyboard extends StatelessWidget {
   final Iterable<String> semiCorrect;
   final Iterable<String> wrong;
   final bool wordReady;
+  final bool wordEmpty;
   const GameKeyboard({
     Key? key,
     required this.onTap,
@@ -22,6 +23,7 @@ class GameKeyboard extends StatelessWidget {
     this.semiCorrect = const [],
     this.wrong = const [],
     this.wordReady = false,
+    this.wordEmpty = false,
   }) : super(key: key);
 
   Color? getColour(String letter) {
@@ -157,7 +159,7 @@ class GameKeyboard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: GestureDetector(
-        onTap: _onBackspace,
+        onTap: !wordEmpty ? _onBackspace : null,
         child: Container(
           width: 75,
           height: 75,
@@ -178,10 +180,11 @@ class GameKeyboard extends StatelessWidget {
               ),
             ],
           ),
-          child: const Center(
+          child: Center(
             child: Icon(
               MdiIcons.backspaceOutline,
               size: 36,
+              color: !wordEmpty ? null : Colors.grey[400],
             ),
           ),
         ),
