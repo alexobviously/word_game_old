@@ -8,6 +8,7 @@ class WordRow extends StatelessWidget {
   final List<int> semiCorrect;
   final List<int> wrong;
   final bool finalised;
+  final bool valid;
   const WordRow({
     Key? key,
     required this.length,
@@ -16,6 +17,7 @@ class WordRow extends StatelessWidget {
     this.semiCorrect = const [],
     this.wrong = const [],
     this.finalised = false,
+    this.valid = true,
   })  : assert(content.length <= length),
         super(key: key);
 
@@ -46,14 +48,16 @@ class WordRow extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 1000),
+        duration: Duration(milliseconds: valid ? 1000 : 250),
         width: 60,
         height: 80,
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           color: colour ?? Colors.grey[300],
           borderRadius: BorderRadius.circular(6.0),
-          border: (!finalised && letter.isNotEmpty) ? Border.all(color: Colors.grey[500]!) : null,
+          border: (!valid || (!finalised && letter.isNotEmpty))
+              ? Border.all(color: valid ? Colors.grey.shade500 : Colours.invalid)
+              : null,
           // shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(

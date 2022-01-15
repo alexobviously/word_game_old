@@ -18,8 +18,11 @@ class GameController extends Cubit<GameState> {
 
   void enter() async {
     final _result = await mediator.validateWord(state.word);
-    if (!_result.valid) return;
-    emit(state.copyWith(current: WordData.blank(), guesses: List.from(state.guesses)..add(_result.word!)));
+    if (!_result.valid) {
+      emit(state.withInvalid());
+    } else {
+      emit(state.copyWith(current: WordData.blank(), guesses: List.from(state.guesses)..add(_result.word!)));
+    }
   }
 
   Stream<int> get numRowsStream => stream.map((e) => e.numRows).distinct();
@@ -30,6 +33,7 @@ class GameState {
   final int length;
   final List<WordData> guesses;
   final WordData current;
+  final bool valid;
 
   String get word => current.content;
   bool get wordReady => word.length == length;
@@ -41,17 +45,20 @@ class GameState {
   bool get gameFinished => guesses.isNotEmpty && guesses.last.correctLetters.length == length;
   int get numRows => guesses.length + (gameFinished ? 0 : 1);
 
-  GameState({required this.length, required this.guesses, required this.current});
+  GameState({required this.length, required this.guesses, required this.current, this.valid = true});
   factory GameState.initial(int length) => GameState(length: length, guesses: [], current: WordData.blank());
 
   GameState copyWith({
     int? length,
     List<WordData>? guesses,
     WordData? current,
+    bool valid = true,
   }) =>
       GameState(
         length: length ?? this.length,
         guesses: guesses ?? this.guesses,
         current: current ?? this.current,
+        valid: valid,
       );
+  GameState withInvalid() => copyWith(valid: false);
 }

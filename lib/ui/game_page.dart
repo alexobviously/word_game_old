@@ -100,7 +100,7 @@ class _GamePageState extends State<GamePage> {
                                 .toList(),
                             if (!state.gameFinished)
                               FittedBox(
-                                child: WordRow(length: state.length, content: state.word),
+                                child: WordRow(length: state.length, content: state.word, valid: state.valid),
                               ),
                           ],
                         ),
