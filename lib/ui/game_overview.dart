@@ -18,6 +18,7 @@ class _GameOverviewState extends State<GameOverview> {
   void _scrollDown() {
     SchedulerBinding.instance!.addPostFrameCallback(
       (_) {
+        if (_controller.positions.isEmpty) return; // ???
         _controller.animateTo(
           _controller.position.maxScrollExtent,
           duration: const Duration(milliseconds: 250),
@@ -35,46 +36,41 @@ class _GameOverviewState extends State<GameOverview> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      final mw = constraints.maxWidth;
-      final mh = constraints.maxHeight;
-      print('lb $mw x $mh');
-      return Container(
-        padding: const EdgeInsets.all(2.0),
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(6.0),
-          border: Border.all(color: Colors.grey[500]!),
-          // shape: BoxShape.circle,
-        ),
-        child: BlocBuilder<GameController, GameState>(
-          bloc: widget.game,
-          builder: (context, state) {
-            return ListView(
-              controller: _controller,
-              children: [
-                ...state.guesses
-                    .map(
-                      (e) => FittedBox(
-                        child: WordRow(
-                          length: state.length,
-                          content: e.content,
-                          correct: e.correct,
-                          semiCorrect: e.semiCorrect,
-                          finalised: e.finalised,
-                        ),
+    return Container(
+      padding: const EdgeInsets.all(2.0),
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        borderRadius: BorderRadius.circular(6.0),
+        border: Border.all(color: Colors.grey[500]!),
+        // shape: BoxShape.circle,
+      ),
+      child: BlocBuilder<GameController, GameState>(
+        bloc: widget.game,
+        builder: (context, state) {
+          return ListView(
+            controller: _controller,
+            children: [
+              ...state.guesses
+                  .map(
+                    (e) => FittedBox(
+                      child: WordRow(
+                        length: state.length,
+                        content: e.content,
+                        correct: e.correct,
+                        semiCorrect: e.semiCorrect,
+                        finalised: e.finalised,
                       ),
-                    )
-                    .toList(),
-                if (!state.gameFinished)
-                  FittedBox(
-                    child: WordRow(length: state.length, content: state.word),
+                    ),
                   )
-              ],
-            );
-          },
-        ),
-      );
-    });
+                  .toList(),
+              if (!state.gameFinished)
+                FittedBox(
+                  child: WordRow(length: state.length, content: state.word),
+                )
+            ],
+          );
+        },
+      ),
+    );
   }
 }

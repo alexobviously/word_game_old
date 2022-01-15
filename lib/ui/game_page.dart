@@ -22,6 +22,7 @@ class _GamePageState extends State<GamePage> {
   void _scrollDown() {
     SchedulerBinding.instance!.addPostFrameCallback(
       (_) {
+        if (_controller.positions.isEmpty) return; // ???
         _controller.animateTo(
           _controller.position.maxScrollExtent,
           duration: const Duration(milliseconds: 250),
