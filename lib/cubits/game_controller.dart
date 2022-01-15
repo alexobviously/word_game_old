@@ -23,6 +23,7 @@ class GameController extends Cubit<GameState> {
   }
 
   Stream<int> get numRowsStream => stream.map((e) => e.numRows).distinct();
+  Stream<bool> get gameFinishedStream => stream.map((e) => e.gameFinished).distinct();
 }
 
 class GameState {

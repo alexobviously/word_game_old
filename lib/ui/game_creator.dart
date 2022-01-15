@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word_game/cubits/game_manager.dart';
 import 'package:word_game/model/game_config.dart';
+import 'package:word_game/ui/length_control.dart';
 
 class GameCreator extends StatefulWidget {
   GameCreator({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class GameCreator extends StatefulWidget {
 
 class _GameCreatorState extends State<GameCreator> {
   final _formKey = GlobalKey<FormState>();
+
+  static int length = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +43,14 @@ class _GameCreatorState extends State<GameCreator> {
       ),
       child: Column(
         children: [
-          Text('New Game', style: textTheme.headline5),
-          OutlinedButton(onPressed: () => gameManager.createLocalGame(GameConfig(wordLength: 5)), child: Text('Start')),
+          LengthControl(
+            length: length,
+            onChanged: (x) => setState(() => length = x),
+          ),
+          OutlinedButton(
+            onPressed: () => gameManager.createLocalGame(GameConfig(wordLength: length)),
+            child: Text('Create New Game', style: textTheme.headline6!.copyWith(color: theme.primaryColor)),
+          ),
         ],
       ),
     );

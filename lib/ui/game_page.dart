@@ -73,7 +73,7 @@ class _GamePageState extends State<GamePage> {
                           ),
                           Spacer(),
                           Text(
-                            'Game: 5 letters',
+                            'Game: ${state.length} letters',
                             style: Theme.of(context).textTheme.headline4,
                           ),
                         ],
@@ -87,16 +87,21 @@ class _GamePageState extends State<GamePage> {
                           children: [
                             ...state.guesses
                                 .map(
-                                  (e) => WordRow(
-                                    length: state.length,
-                                    content: e.content,
-                                    correct: e.correct,
-                                    semiCorrect: e.semiCorrect,
-                                    finalised: e.finalised,
+                                  (e) => FittedBox(
+                                    child: WordRow(
+                                      length: state.length,
+                                      content: e.content,
+                                      correct: e.correct,
+                                      semiCorrect: e.semiCorrect,
+                                      finalised: e.finalised,
+                                    ),
                                   ),
                                 )
                                 .toList(),
-                            if (!state.gameFinished) WordRow(length: state.length, content: state.word),
+                            if (!state.gameFinished)
+                              FittedBox(
+                                child: WordRow(length: state.length, content: state.word),
+                              ),
                           ],
                         ),
                       ),
