@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word_game/cubits/game_manager.dart';
 import 'package:word_game/model/game_config.dart';
@@ -15,6 +16,11 @@ class _GameCreatorState extends State<GameCreator> {
   final _formKey = GlobalKey<FormState>();
 
   static int length = 5;
+
+  void _setLength(int l) {
+    HapticFeedback.mediumImpact();
+    setState(() => length = l);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +51,13 @@ class _GameCreatorState extends State<GameCreator> {
         children: [
           LengthControl(
             length: length,
-            onChanged: (x) => setState(() => length = x),
+            onChanged: _setLength,
           ),
           OutlinedButton(
-            onPressed: () => gameManager.createLocalGame(GameConfig(wordLength: length)),
+            onPressed: () {
+              HapticFeedback.vibrate();
+              gameManager.createLocalGame(GameConfig(wordLength: length));
+            },
             child: Text('Create New Game', style: textTheme.headline6!.copyWith(color: theme.primaryColor)),
           ),
         ],

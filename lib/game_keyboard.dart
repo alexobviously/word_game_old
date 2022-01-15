@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:word_game/app/colours.dart';
 import 'package:word_game/cubits/game_controller.dart';
@@ -36,6 +37,21 @@ class GameKeyboard extends StatelessWidget {
     return null;
   }
 
+  void _onTap(String l) {
+    HapticFeedback.mediumImpact();
+    onTap(l);
+  }
+
+  void _onEnter() {
+    HapticFeedback.vibrate();
+    onEnter();
+  }
+
+  void _onBackspace() {
+    HapticFeedback.mediumImpact();
+    onBackspace();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Row> _rows = [];
@@ -65,7 +81,7 @@ class GameKeyboard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: GestureDetector(
-        onTap: () => onTap(letter),
+        onTap: () => _onTap(letter),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 1000),
           width: 50,
@@ -103,7 +119,7 @@ class GameKeyboard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: GestureDetector(
-        onTap: wordReady ? onEnter : null,
+        onTap: wordReady ? _onEnter : null,
         child: Container(
           width: 75,
           height: 75,
@@ -141,7 +157,7 @@ class GameKeyboard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: GestureDetector(
-        onTap: onBackspace,
+        onTap: _onBackspace,
         child: Container(
           width: 75,
           height: 75,
