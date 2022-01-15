@@ -20,6 +20,7 @@ dependencies:
   hive: ^2.0.5
   hive_flutter: ^1.1.0
   material_design_icons_flutter: ^5.0.6595
+  validators: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -31,6 +32,7 @@ flutter:
 
   assets:
     - assets/words_alpha.txt
+    - assets/words_common.txt
 
   # To add assets to your application, add an assets section, like this:
   # assets:

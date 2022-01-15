@@ -10,7 +10,7 @@ class OfflineMediator implements Mediator {
   Future<WordValidationResult> validateWord(String word) async {
     if (word.length != answer.length) return WordValidationResult.invalid();
     if (!dictionary().isValidWord(word)) return WordValidationResult.invalid();
-    print('answer: $answer');
+    // print('answer: $answer');
     List<int> correct = [];
     List<int> semiCorrect = [];
     for (int i = 0; i < word.length; i++) {
