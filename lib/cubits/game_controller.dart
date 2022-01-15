@@ -21,6 +21,8 @@ class GameController extends Cubit<GameState> {
     if (!_result.valid) return;
     emit(state.copyWith(current: WordData.blank(), guesses: List.from(state.guesses)..add(_result.word!)));
   }
+
+  Stream<int> get numRowsStream => stream.map((e) => e.numRows).distinct();
 }
 
 class GameState {
@@ -35,6 +37,7 @@ class GameState {
       Set<String>.from(guesses.expand((e) => e.semiCorrectLetters))..removeWhere((e) => correctLetters.contains(e));
   Set<String> get wrongLetters => Set<String>.from(guesses.expand((e) => e.wrongLetters));
   bool get gameFinished => guesses.isNotEmpty && guesses.last.correctLetters.length == length;
+  int get numRows => guesses.length + (gameFinished ? 0 : 1);
 
   GameState({required this.length, required this.guesses, required this.current});
   factory GameState.initial(int length) => GameState(length: length, guesses: [], current: WordData.blank());

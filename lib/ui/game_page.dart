@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:word_game/cubits/game_controller.dart';
@@ -15,6 +16,39 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   GameController get game => widget.game;
+
+  final ScrollController _controller = ScrollController();
+
+  void _scrollDown() {
+    SchedulerBinding.instance!.addPostFrameCallback(
+      (_) {
+        _controller.animateTo(
+          _controller.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.fastOutSlowIn,
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    widget.game.numRowsStream.listen((_) => _scrollDown());
+    super.initState();
+  }
+
+  void _onEnter() => game.enter();
+
+  void _onBackspace() {
+    _scrollDown();
+    if (game.state.current.content.isEmpty) setState(() {}); // hack for scroll
+    game.backspace();
+  }
+
+  void _addLetter(String l) {
+    game.addLetter(l);
+    _scrollDown();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +80,7 @@ class _GamePageState extends State<GamePage> {
                     ),
                     Expanded(
                       child: SingleChildScrollView(
+                        controller: _controller,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -71,9 +106,9 @@ class _GamePageState extends State<GamePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: FittedBox(
                             child: GameKeyboard(
-                          onTap: (x) => game.addLetter(x),
-                          onBackspace: () => game.backspace(),
-                          onEnter: () => game.enter(),
+                          onTap: _addLetter,
+                          onBackspace: _onBackspace,
+                          onEnter: _onEnter,
                           correct: state.correctLetters,
                           semiCorrect: state.semiCorrectLetters,
                           wrong: state.wrongLetters,
